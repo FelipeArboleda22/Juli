@@ -9,7 +9,7 @@ username = st.text_input("Introduce el nombre de usuario de Instagram")
 
 # Agrega tus credenciales de Instagram
 insta_username = "felipekaro22@gmail.com"
-insta_password = "729543816Wp"
+insta_password = "729543816"
 
 if st.button("Descargar"):
     if username:
