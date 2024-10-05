@@ -8,7 +8,7 @@ st.title("Descargar Foto de Perfil de Instagram")
 username = st.text_input("Introduce el nombre de usuario de Instagram")
 
 # Agrega tus credenciales de Instagram
-insta_username = "arboleda_22"
+insta_username = "arboleda.22"
 insta_password = "729543816"
 
 if st.button("Descargar"):
