@@ -4,33 +4,40 @@ import requests
 
 st.title("Descargar Foto de Perfil de Instagram")
 
-# Input para el nombre de usuario de Instagram
+# Pedir nombre de usuario de Instagram
 username = st.text_input("Introduce el nombre de usuario de Instagram")
 
-# Botón para iniciar la descarga
+# Agrega tus credenciales de Instagram
+insta_username = "tu_usuario_instagram"
+insta_password = "tu_contraseña_instagram"
+
 if st.button("Descargar"):
     if username:
         # Crear una instancia de Instaloader
         L = instaloader.Instaloader()
+
+        # Iniciar sesión en Instagram
         try:
-            # Obtener el perfil y la URL de la foto de perfil
+            L.login(insta_username, insta_password)
+
+            # Obtener el perfil
             profile = instaloader.Profile.from_username(L.context, username)
             profile_pic_url = profile.profile_pic_url
 
-            # Realizar la solicitud para descargar la imagen
+            # Descargar la foto de perfil
             response = requests.get(profile_pic_url)
 
             if response.status_code == 200:
-                # Guardar la imagen en un archivo local
                 with open(f"{username}.jpg", "wb") as file:
                     file.write(response.content)
 
-                # Mostrar la imagen en Streamlit
                 st.success(f"Foto de perfil de {username} descargada con éxito.")
                 st.image(f"{username}.jpg", caption=f"Foto de perfil de {username}")
             else:
                 st.error("Error al descargar la foto de perfil.")
-        except instaloader.exceptions.ProfileNotExistsException:
-            st.error(f"El perfil {username} no existe.")
+        except instaloader.exceptions.BadCredentialsException:
+            st.error("Credenciales de Instagram incorrectas.")
+        except instaloader.exceptions.ConnectionException:
+            st.error("Error al conectarse a Instagram.")
         except Exception as e:
             st.error(f"Ocurrió un error: {e}")
